@@ -8,18 +8,51 @@ Skill de auditoria, segurança e manutenção preventiva para servidores Linux d
 
 ## Instalação rápida
 
+Instalação no destino universal do agente:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/fernandosscherer/InfraGuardian/main/install.sh | bash
 ```
 
 ## Instalação local
 
+Execute na raiz do repositório:
+
 ```bash
-./install.sh install --source . --target universal
-./install.sh install --source . --target opencode
-./install.sh install --source . --target claude
-./install.sh install --source . --target project
+bash install.sh install --source . --target universal
 ```
+
+Outros destinos disponíveis:
+
+```bash
+bash install.sh install --source . --target opencode
+bash install.sh install --source . --target claude
+bash install.sh install --source . --target project
+```
+
+## How to use
+
+InfraGuardian é uma Skill para agentes de IA, não um executável de linha de comando independente. Depois de instalar, abra o agente no ambiente em que a Skill foi instalada e solicite a tarefa em linguagem natural.
+
+**Auditoria geral:**
+
+```text
+Use InfraGuardian para auditar este servidor Linux.
+```
+
+**Segurança e e-mail:**
+
+```text
+Use InfraGuardian no modo MAIL para verificar a segurança e a configuração do serviço de e-mail.
+```
+
+**Manutenção preventiva:**
+
+```text
+Use InfraGuardian para elaborar um plano de manutenção preventiva deste servidor.
+```
+
+Também é possível solicitar os modos específicos: `AUDIT`, `MAIL`, `SECURITY`, `MIGRATION`, `PERFORMANCE`, `BACKUP`, `RECHECK` e `REMEDIATION-PLAN`. O modo `REMEDIATION` exige autorização explícita para cada ação.
 
 ## Segurança
 
