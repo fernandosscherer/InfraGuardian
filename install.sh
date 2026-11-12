@@ -39,17 +39,39 @@ HELP
 }
 
 INSTALLER_VERSION="1.0.1"
-PROJECT_NAME="InfraGuardian"
 PROJECT_DESC="Auditoria, segurança e manutenção preventiva para servidores Linux"
 AUTHOR="Fernando Scherer"
 REPOSITORY="https://github.com/fernandosscherer/InfraGuardian"
 
-if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
-  C_GREEN= '\033[0;32m[InfraGuardian]\033[0m %s\n' "$*"; }
+if [[ -t 1 && -z "\${NO_COLOR:-}" ]]; then
+  C_GREEN=$'\033[0;32m'
+  C_BOLD=$'\033[1;32m'
+  C_DIM=$'\033[2m'
+  C_WHITE=$'\033[1;37m'
+  C_RESET=$'\033[0m'
+else
+  C_GREEN="" C_BOLD="" C_DIM="" C_WHITE="" C_RESET=""
+fi
+
+log(){ printf '%s[InfraGuardian]%s %s\n' "$C_GREEN" "$C_RESET" "$*"; }
 warn(){ printf '\033[1;33m[aviso]\033[0m %s\n' "$*" >&2; }
 die(){ printf '\033[0;31m[erro]\033[0m %s\n' "$*" >&2; exit 1; }
 cleanup(){ if [[ -n "$TMP_DIR" && -d "$TMP_DIR" ]]; then rm -rf "$TMP_DIR"; fi; }
 trap cleanup EXIT
+
+banner() {
+  printf '\n'
+  printf '%s╔══════════════════════════════════════════════════════════════════════════════╗%s\n' "$C_GREEN" "$C_RESET"
+  printf '%s║%s                         I N F R A G U A R D I A N                          %s║%s\n' "$C_GREEN" "$C_WHITE" "$C_GREEN" "$C_RESET"
+  printf '%s║%s                    LINUX SERVER OPERATIONS & SECURITY                       %s║%s\n' "$C_GREEN" "$C_DIM" "$C_GREEN" "$C_RESET"
+  printf '%s╠══════════════════════════════════════════════════════════════════════════════╣%s\n' "$C_GREEN" "$C_RESET"
+  printf '%s║  %s  ║%s\n' "$C_GREEN" "$PROJECT_DESC" "$C_RESET"
+  printf '%s║%s AUDIT • MAIL • SECURITY • MIGRATION • PERFORMANCE • BACKUP %s║%s\n' "$C_GREEN" "$C_WHITE" "$C_GREEN" "$C_RESET"
+  printf '%s║%s READ-ONLY BY DEFAULT | Mudanças exigem autorização explícita %s║%s\n' "$C_GREEN" "$C_BOLD" "$C_GREEN" "$C_RESET"
+  printf '%s╚══════════════════════════════════════════════════════════════════════════════╝%s\n' "$C_GREEN" "$C_RESET"
+  printf '\n  %sAUTOR:%s %s\n  %sREPOSITÓRIO:%s %s\n  %sVERSÃO:%s %s\n' "$C_DIM" "$C_RESET" "$AUTHOR" "$C_DIM" "$C_RESET" "$REPOSITORY" "$C_DIM" "$C_RESET" "$INSTALLER_VERSION"
+  printf '\n  %sAÇÃO:%s %s   %sDESTINO:%s %s   %sREF:%s %s\n\n' "$C_DIM" "$C_RESET" "$ACTION" "$C_DIM" "$C_RESET" "$TARGET" "$C_DIM" "$C_RESET" "$REF"
+}
 
 while (($#)); do
   case "$1" in
@@ -80,7 +102,9 @@ destinations() {
   esac
 }
 
-banner\n\nif [[ "$ACTION" == "uninstall" ]]; then
+banner
+
+if [[ "$ACTION" == "uninstall" ]]; then
   while IFS= read -r dest; do
     [[ -d "$dest" ]] || { log "Não instalado: $dest"; continue; }
     if ((YES == 0)); then
