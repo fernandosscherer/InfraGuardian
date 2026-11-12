@@ -1,0 +1,35 @@
+name: Release InfraGuardian
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate version
+        shell: bash
+        run: |
+          VERSION_FILE="$(cat VERSION)"
+          TAG="${GITHUB_REF_NAME#v}"
+          test "$VERSION_FILE" = "$TAG"
+          test -s infraguardian/SKILL.md
+          grep -q "version: \"$TAG\"" infraguardian/SKILL.md
+          bash -n install.sh
+          bash infraguardian/scripts/validate.sh
+      - name: Build archive
+        shell: bash
+        run: |
+          zip -qr "infraguardian-${GITHUB_REF_NAME}.zip" infraguardian README.md LICENSE CHANGELOG.md VERSION install.sh uninstall.sh docs
+          sha256sum "infraguardian-${GITHUB_REF_NAME}.zip" > "infraguardian-${GITHUB_REF_NAME}.zip.sha256"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            infraguardian-${{ github.ref_name }}.zip
+            infraguardian-${{ github.ref_name }}.zip.sha256
