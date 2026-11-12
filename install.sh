@@ -65,38 +65,42 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Moldura ASCII: largura fixa para evitar desalinhamento entre terminais.
+BOX_INNER=72
+BOX_BORDER="+$(printf '%*s' "$((BOX_INNER + 2))" '' | tr ' ' '-')+"
+
 box_line() {
   local value="$1"
-  local length padding_left padding_right
-  length=${#value}
-  (( length > BOX_WIDTH )) && value="${value:0:BOX_WIDTH}" && length=$BOX_WIDTH
-  padding_left=$(( (BOX_WIDTH - length) / 2 ))
-  padding_right=$(( BOX_WIDTH - length - padding_left ))
-  printf '%s║%s %*s%s%s%*s %s║%s\n' \
-    "$C_GREEN" "$C_GREEN" "$padding_left" "" "$value" "$C_GREEN" "$padding_right" "" "$C_GREEN" "$C_RESET"
+  printf '| %-*.*s |\n' "$BOX_INNER" "$BOX_INNER" "$value"
 }
 
-box_left_line() {
-  printf '%s║%s %-*s %s║%s\n' "$C_GREEN" "$C_GREEN" "$BOX_WIDTH" "$1" "$C_GREEN" "$C_RESET"
+box_center() {
+  local value="$1"
+  local length left right
+  length=${#value}
+  (( length > BOX_INNER )) && value="${value:0:BOX_INNER}" && length=$BOX_INNER
+  left=$(( (BOX_INNER - length) / 2 ))
+  right=$(( BOX_INNER - length - left ))
+  printf '| %*s%s%*s |\n' "$left" '' "$value" "$right" ''
 }
 
 banner() {
+  printf '\n%s\n' "$BOX_BORDER"
+  box_center "INFRAGUARDIAN"
+  box_center "LINUX SERVER OPERATIONS & SECURITY"
+  printf '%s\n' "$BOX_BORDER"
+  box_line "Linux server auditing, security and preventive maintenance"
+  box_line "AUDIT  |  MAIL  |  SECURITY  |  MIGRATION  |  PERFORMANCE  |  BACKUP"
+  box_line "READ-ONLY BY DEFAULT - Changes require explicit authorization"
+  printf '%s\n' "$BOX_BORDER"
   printf '\n'
-  printf '%s╔════════════════════════════════════════════════════════════════════════════════╗%s\n' "$C_GREEN" "$C_RESET"
-  box_line "I N F R A G U A R D I A N"
-  box_line "LINUX SERVER OPERATIONS & SECURITY"
-  printf '%s╠════════════════════════════════════════════════════════════════════════════════╣%s\n' "$C_GREEN" "$C_RESET"
-  box_left_line "$PROJECT_DESC"
-  box_line "AUDIT • MAIL • SECURITY • MIGRATION • PERFORMANCE • BACKUP"
-  box_line "READ-ONLY BY DEFAULT | Mudanças exigem autorização explícita"
-  printf '%s╚════════════════════════════════════════════════════════════════════════════════╝%s\n' "$C_GREEN" "$C_RESET"
+  printf '  %sAuthor:      %s\n' "$C_DIM" "$AUTHOR"
+  printf '  Repository:  %s\n' "$REPOSITORY"
+  printf '  Version:     %s\n' "$INSTALLER_VERSION"
   printf '\n'
-  printf '  %sAUTOR:%s %s\n' "$C_DIM" "$C_RESET" "$AUTHOR"
-  printf '  %sREPOSITÓRIO:%s %s\n' "$C_DIM" "$C_RESET" "$REPOSITORY"
-  printf '  %sVERSÃO:%s %s\n' "$C_DIM" "$C_RESET" "$INSTALLER_VERSION"
-  printf '\n'
-  printf '  %sAÇÃO:%s %s   %sDESTINO:%s %s   %sREF:%s %s\n\n' \
-    "$C_DIM" "$C_RESET" "$ACTION" "$C_DIM" "$C_RESET" "$TARGET" "$C_DIM" "$C_RESET" "$REF"
+  printf '  Action:      %s\n' "$ACTION"
+  printf '  Target:      %s\n' "$TARGET"
+  printf '  Ref:         %s\n\n' "$REF"
 }
 
 while (($#)); do
