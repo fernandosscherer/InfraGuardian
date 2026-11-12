@@ -95,7 +95,7 @@ banner() {
   box_line "READ-ONLY BY DEFAULT - Changes require explicit authorization"
   printf '%s%s%s\n\n' "$C_GREEN" "$BOX_BORDER" "$C_RESET"
 
-  printf '  %sAuthor:%s %s%s%s\n' "$C_WHITE" "$C_RESET" "$C_BOLD" "$AUTHOR" "$C_RESET"
+  printf '  %sAuthor: %s%s\n' "$C_WHITE" "$AUTHOR" "$C_RESET"
   printf '  %sRepository:%s %s\n' "$C_DIM" "$C_RESET" "$REPOSITORY"
   printf '  %sVersion:%s %s\n' "$C_DIM" "$C_RESET" "$INSTALLER_VERSION"
   printf '\n'
