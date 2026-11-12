@@ -43,7 +43,7 @@ PROJECT_DESC="Auditoria, segurança e manutenção preventiva para servidores Li
 AUTHOR="Fernando Scherer"
 REPOSITORY="https://github.com/fernandosscherer/InfraGuardian"
 
-if [[ -t 1 && -z "\${NO_COLOR:-}" ]]; then
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
   C_GREEN=$'\033[0;32m'
   C_BOLD=$'\033[1;32m'
   C_DIM=$'\033[2m'
