@@ -85,22 +85,28 @@ box_center() {
 }
 
 banner() {
-  printf '\n%s\n' "$BOX_BORDER"
+  printf '\n%s\n' "$C_GREEN$BOX_BORDER$C_RESET"
+  printf '%s' "$C_GREEN"
   box_center "INFRAGUARDIAN"
   box_center "LINUX SERVER OPERATIONS & SECURITY"
   printf '%s\n' "$BOX_BORDER"
   box_line "Linux server auditing, security and preventive maintenance"
   box_line "AUDIT  |  MAIL  |  SECURITY  |  MIGRATION  |  PERFORMANCE  |  BACKUP"
   box_line "READ-ONLY BY DEFAULT - Changes require explicit authorization"
-  printf '%s\n' "$BOX_BORDER"
+  printf '%s%s%s\n\n' "$C_GREEN" "$BOX_BORDER" "$C_RESET"
+
+  printf '  %sAuthor:%s %s%s%s\n' "$C_WHITE" "$C_RESET" "$C_BOLD" "$AUTHOR" "$C_RESET"
+  printf '  %sRepository:%s %s\n' "$C_DIM" "$C_RESET" "$REPOSITORY"
+  printf '  %sVersion:%s %s\n' "$C_DIM" "$C_RESET" "$INSTALLER_VERSION"
   printf '\n'
-  printf '  %sAuthor:      %s\n' "$C_DIM" "$AUTHOR"
-  printf '  Repository:  %s\n' "$REPOSITORY"
-  printf '  Version:     %s\n' "$INSTALLER_VERSION"
-  printf '\n'
-  printf '  Action:      %s\n' "$ACTION"
-  printf '  Target:      %s\n' "$TARGET"
-  printf '  Ref:         %s\n\n' "$REF"
+  printf '  %sAction:%s %s\n' "$C_DIM" "$C_RESET" "$ACTION"
+  printf '  %sTarget:%s %s\n' "$C_DIM" "$C_RESET" "$TARGET"
+  printf '  %sRef:%s    %s\n' "$C_DIM" "$C_RESET" "$REF"
+  printf '\n%sHOW TO USE%s\n' "$C_BOLD" "$C_RESET"
+  printf '  In your AI agent, ask:\n'
+  printf '  %sUse InfraGuardian to audit this Linux server.%s\n' "$C_GREEN" "$C_RESET"
+  printf '  %sUse InfraGuardian in MAIL mode to check email security.%s\n' "$C_GREEN" "$C_RESET"
+  printf '  %sUse InfraGuardian to create a preventive maintenance plan.%s\n\n' "$C_GREEN" "$C_RESET"
 }
 
 while (($#)); do
